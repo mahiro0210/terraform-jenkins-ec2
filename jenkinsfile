@@ -32,7 +32,7 @@
       stage('TF Apply') {
         steps {
             withCredentials([string(credentialsId: 'access_key', variable: 'access_key'), string(credentialsId: 'secret_key', variable: 'secret_key')]) {
-                sh "terraform apply -input=false -var 'access_key=$access_key' -var 'secret_key=$secret_key'"
+                sh "terraform apply -auto-approve -input=false -var 'access_key=$access_key' -var 'secret_key=$secret_key'"
             }
         }
       }
