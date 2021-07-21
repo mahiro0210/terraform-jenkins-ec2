@@ -14,9 +14,11 @@
 
       stage('TF Init&Plan') {
         steps {
-          sh 'terraform init'
-          sh 'terraform plan'
-        }      
+            sh "terraform init"
+            withCredentials([string(credentialsId: 'access_key', variable: 'access_key'), string(credentialsId: 'secret_key', variable: 'secret_key')]) {
+                sh "terraform plan -var 'access_key=$access_key' -var 'secret_key=$secret_key'"
+            }
+        }
       }
 
       stage('Approval') {
@@ -29,7 +31,9 @@
 
       stage('TF Apply') {
         steps {
-          sh 'terraform apply -input=false'
+            withCredentials([string(credentialsId: 'access_key', variable: 'access_key'), string(credentialsId: 'secret_key', variable: 'secret_key')]) {
+                sh "terraform apply -input=false -var 'access_key=$access_key' -var 'secret_key=$secret_key'"
+            }
         }
       }
     } 
